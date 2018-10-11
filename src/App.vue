@@ -23,6 +23,8 @@ export default {
     return {
       questionario: new Questionario()
     }
+  },
+  methods: {
   }
 }
 </script>
