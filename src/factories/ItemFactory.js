@@ -10,10 +10,10 @@ class ItemFactory {
 
   createItem(args) {
     switch (args.type) {
-      case ItemType.SIMPLE_TEXT:
+      case ItemType.SIMPLE_TEXT.id:
         this.itemClass = SimpleText;
         break;
-      case ItemType.MULTIPLE_CHOICE:
+      case ItemType.MULTIPLE_CHOICE.id:
         this.itemClass = MultipleChoice;
         break;
     }

@@ -4,8 +4,10 @@
     <el-container class="el--center">
       <div class="quiz-container">
         <quiz-section :id="0" class="quiz-title-section">
-          <el-input class="big-input quiz-text-input" placeholder="Título do Questionário" v-model="quiz.title"></el-input>
-          <el-input class="quiz-text-input" placeholder="Descrição do formulário" v-model="quiz.description"></el-input>
+          <el-input v-model="quiz.title"
+                    class="big-input quiz-text-input" placeholder="Título do Questionário"></el-input>
+          <el-input v-model="quiz.description" type="textarea" autosize
+                    class="quiz-text-input" placeholder="Descrição do formulário"></el-input>
         </quiz-section>
         <quiz-section :id="item.id" v-for="item in quiz.items" :key="item.id">
           <quiz-item :item="item"></quiz-item>
@@ -13,7 +15,9 @@
       </div>
       <div class="quiz-actions">
         <el-button @click="addItem()" icon="el-icon-circle-plus-outline" type="text"></el-button>
-        <el-button class="text-danger" icon="el-icon-delete" type="text" ></el-button>
+        <el-button :class="{'text-danger': sectionActive}"
+                   @click="removeActiveQuizItem()"
+                   icon="el-icon-delete" type="text" :disabled="!sectionActive" ></el-button>
       </div>
     </el-container>
   </div>
@@ -30,17 +34,19 @@ export default {
   components: {QuizItem, QuizSection },
   data() {
     return {
-      isSimpleText: ItemType.SIMPLE_TEXT,
-      isMultipleChoice: ItemType.MULTIPLE_CHOICE
     }
   },
   computed: {
-    ...mapGetters(['quiz'])
+    ...mapGetters(['quiz', 'sectionActive'])
   },
   methods: {
-    ...mapActions(['addQuizItem']),
+    ...mapActions(['addQuizItem', 'removeActiveQuizItem']),
     addItem() {
-      this.addQuizItem({type: ItemType.SIMPLE_TEXT})
+      let activeItem = null;
+      if (this.quiz.items.length && this.sectionActive) {
+        activeItem = this.quiz.items.find((item) => item.id === this.sectionActive);
+      }
+      this.addQuizItem({ type: (activeItem) ? activeItem.type : ItemType.SIMPLE_TEXT.id })
     }
   }
 }
@@ -81,17 +87,21 @@ body {
   box-shadow: 0 3px 7px 0 #888888;
   flex-basis: 770px;
 }
-.quiz-container .quiz-text-input input[type="text"] {
+.quiz-container .quiz-text-input input[type="text"], .quiz-container .quiz-text-input textarea {
   border: none;
   background-color: transparent;
   border-bottom: 1px solid #c4c7cf;
   border-radius: 0;
   padding-left: 3px;
 }
-.el-input.big-input input {
+.quiz-text-input textarea {
+  resize: none;
+}
+
+.el-input.big-input input, .el-textarea.big-input textarea {
   font-size: 34px;
 }
-.el-input.medium-input input {
+.el-input.medium-input input, .el-textarea.medium-input textarea {
   font-size: 21px;
 }
 .quiz-actions {

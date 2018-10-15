@@ -1,5 +1,5 @@
 <template>
-  <div @click="activate({id: id, offsetTop: $el.offsetTop})" class="quiz-section" :class="{active: sectionActive === id}">
+  <div @click="activate(id)" class="quiz-section" :class="{active: sectionActive === id}">
     <div class="quiz-active-bar"></div>
     <div class="quiz-section-content">
       <slot></slot>

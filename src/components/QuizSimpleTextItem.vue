@@ -8,11 +8,9 @@
 <script>
 
   import SimpleTextItem from "../models/SimpleTextItem";
-  import QuizItem from "./QuizItem";
 
   export default {
     name: 'QuizSimpleTextItem',
-    components: {QuizItem},
     props: {
         item: SimpleTextItem
     }

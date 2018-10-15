@@ -1,10 +1,11 @@
 import ItemType from "../enums/ItemType";
+import QuizItem from "@/models/QuizItem";
 
-class MultipleChoiceItem {
+class MultipleChoiceItem extends QuizItem {
 
-  constructor({id} = {}) {
-    this.type = ItemType.MULTIPLE_CHOICE;
-    this.id = id;
+  constructor({id, question} = {}) {
+    super({id, question, type: ItemType.MULTIPLE_CHOICE.id} );
+    this.options = [""]
   }
 
 }

@@ -5,12 +5,10 @@ const quizSectionStore = {
   },
   mutations: {
     SET_ACTIVE: (state, data) => state.active = data,
-    SET_OFFSET_TOP: (state, data) => state.offsetTop = data,
   },
   actions: {
-    activate: ({commit} = {}, {id, offsetTop}) => {
-      commit('SET_ACTIVE', id);
-      commit('SET_OFFSET_TOP', offsetTop);
+    activate: ({commit} = {}, active) => {
+      commit('SET_ACTIVE', active);
     }
   }
 };

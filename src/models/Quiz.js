@@ -9,15 +9,6 @@ class Quiz {
     this.items = items;
   }
 
-  addTextItem() {
-    let itemFactory = new ItemFactory();
-    const simpleTextItem = itemFactory.createItem({
-      type: ItemType.SIMPLE_TEXT,
-      id: this.items.length + 1
-    });
-    this.items.push(simpleTextItem)
-  }
-
 }
 
 export default Quiz
