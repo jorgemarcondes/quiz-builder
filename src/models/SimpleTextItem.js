@@ -1,9 +1,10 @@
-import ItemType from "../enums/ItemType";
+import QuizItem from "./QuizItem";
 
-class SimpleTextItem {
+class SimpleTextItem extends QuizItem {
 
-  constructor() {
-    this.type = ItemType.SIMPLE_TEXT
+  constructor({id, question, rowsAmount = 1} = {}) {
+    super({id, question});
+    this.rowsAmount = rowsAmount
   }
 
 }

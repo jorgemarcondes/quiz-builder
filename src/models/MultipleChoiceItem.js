@@ -2,8 +2,9 @@ import ItemType from "../enums/ItemType";
 
 class MultipleChoiceItem {
 
-  constructor() {
-    this.type = ItemType.MULTIPLE_CHOICE
+  constructor({id} = {}) {
+    this.type = ItemType.MULTIPLE_CHOICE;
+    this.id = id;
   }
 
 }

@@ -1,5 +1,5 @@
 <template>
-  <div @click="activate()" class="quiz-section" :class="{active: active}">
+  <div @click="activate({id: id, offsetTop: $el.offsetTop})" class="quiz-section" :class="{active: sectionActive === id}">
     <div class="quiz-active-bar"></div>
     <div class="quiz-section-content">
       <slot></slot>
@@ -8,18 +8,18 @@
 </template>
 
 <script>
+
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
-  name: 'PfQuizSection',
-  componentName: 'PfQuizSection',
-  data() {
-    return {
-      active: false
-    }
+  name: 'QuizSection',
+  componentName: 'QuizSection',
+  props: ['id'],
+  computed: {
+    ...mapGetters(['sectionActive', 'offsetTop'])
   },
   methods: {
-    activate() {
-      this.active = true
-    }
+    ...mapActions(['activate'])
   }
 }
 </script>
@@ -41,5 +41,8 @@ export default {
   }
   .quiz-section-content .el-input {
     padding-bottom: 8px;
+  }
+  .quiz-section:not(.quiz-title-section).active {
+     box-shadow: 0 0 7px 0 #888888;
   }
 </style>

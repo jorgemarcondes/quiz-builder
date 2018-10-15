@@ -1,7 +1,7 @@
 import ItemType from "../enums/ItemType";
 import ItemFactory from "../factories/ItemFactory";
 
-class Questionario {
+class Quiz {
 
   constructor({title, description, items = []} = {}) {
     this.title = title;
@@ -12,11 +12,12 @@ class Questionario {
   addTextItem() {
     let itemFactory = new ItemFactory();
     const simpleTextItem = itemFactory.createItem({
-      type: ItemType.SIMPLE_TEXT
+      type: ItemType.SIMPLE_TEXT,
+      id: this.items.length + 1
     });
     this.items.push(simpleTextItem)
   }
 
 }
 
-export default Questionario
+export default Quiz

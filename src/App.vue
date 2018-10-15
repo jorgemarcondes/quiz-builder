@@ -2,29 +2,46 @@
   <div id="app">
     <el-header height="144px" class="flex-center"><h2>Questionário</h2></el-header>
     <el-container class="el--center">
-        <div class="pf-quiz-container">
-          <pf-quiz-section class="quiz-title-section">
-            <el-input class="big-input" placeholder="Título do Questionário" v-model="questionario.title"></el-input>
-            <el-input placeholder="Descrição do formulário" v-model="questionario.description"></el-input>
-          </pf-quiz-section>
-        </div>
+      <div class="quiz-container">
+        <quiz-section :id="0" class="quiz-title-section">
+          <el-input class="big-input quiz-text-input" placeholder="Título do Questionário" v-model="quiz.title"></el-input>
+          <el-input class="quiz-text-input" placeholder="Descrição do formulário" v-model="quiz.description"></el-input>
+        </quiz-section>
+        <quiz-section :id="item.id" v-for="item in quiz.items" :key="item.id">
+          <quiz-item :item="item"></quiz-item>
+        </quiz-section>
+      </div>
+      <div class="quiz-actions">
+        <el-button @click="addItem()" icon="el-icon-circle-plus-outline" type="text"></el-button>
+        <el-button class="text-danger" icon="el-icon-delete" type="text" ></el-button>
+      </div>
     </el-container>
   </div>
 </template>
 
 <script>
-import Questionario from './models/Questionario'
-import PfQuizSection from './components/PfQuizSection'
+import QuizSection from './components/QuizSection';
+import QuizItem from './components/QuizItem';
+import ItemType from './enums/ItemType';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'app',
-  components: { PfQuizSection },
+  components: {QuizItem, QuizSection },
   data() {
     return {
-      questionario: new Questionario()
+      isSimpleText: ItemType.SIMPLE_TEXT,
+      isMultipleChoice: ItemType.MULTIPLE_CHOICE
     }
   },
+  computed: {
+    ...mapGetters(['quiz'])
+  },
   methods: {
+    ...mapActions(['addQuizItem']),
+    addItem() {
+      this.addQuizItem({type: ItemType.SIMPLE_TEXT})
+    }
   }
 }
 </script>
@@ -59,12 +76,12 @@ body {
   justify-content: center;
   display: flex;
 }
-.pf-quiz-container {
+.quiz-container {
   background-color: #ffffff;
   box-shadow: 0 3px 7px 0 #888888;
   flex-basis: 770px;
 }
-.el-input input {
+.quiz-container .quiz-text-input input[type="text"] {
   border: none;
   background-color: transparent;
   border-bottom: 1px solid #c4c7cf;
@@ -73,5 +90,26 @@ body {
 }
 .el-input.big-input input {
   font-size: 34px;
+}
+.el-input.medium-input input {
+  font-size: 21px;
+}
+.quiz-actions {
+  background-color: #ffffff;
+  margin-left: 8px;
+  padding: 5px;
+  box-shadow: 0 3px 7px 0 #888888;
+  display: flex;
+  flex-direction: column;
+}
+.quiz-actions button {
+  padding: 5px;
+  margin: 0 !important;
+}
+.quiz-actions button.text-danger {
+  color: #f56c6c;
+}
+.quiz-actions i {
+  font-size: 25px ;
 }
 </style>
