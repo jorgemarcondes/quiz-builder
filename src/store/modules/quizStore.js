@@ -14,6 +14,9 @@ const quizStore = {
     REMOVE_ITEM: (state, itemIdx) => {
       const activeItem = state.quiz.items.findIndex(x => x.id === itemIdx);
       state.quiz.items.splice(activeItem, 1);
+      state.quiz.items.map((item, idx) => {
+        item.id = idx + 1;
+      })
     },
   },
   actions: {
@@ -27,12 +30,12 @@ const quizStore = {
     },
     removeActiveQuizItem: ({commit, rootState, dispatch, state} = {}) => {
       commit('REMOVE_ITEM', rootState.quizSection.active);
-      if (rootState.quizSection.active > 1) {
-        const sortedItems = state.quiz.items.sort((a, b) => Math.max(a, b));
-        const newActiveItem = sortedItems.find((item) => item.id < rootState.quizSection.active) ||
-                              sortedItems.find((item) => item.id > rootState.quizSection.active);
-        dispatch('activate', newActiveItem.id)
-      }
+
+      const sortedItems = state.quiz.items.sort((a, b) => Math.max(a, b));
+      const newActiveItem = sortedItems.find((item) => item.id < rootState.quizSection.active) ||
+                            sortedItems.find((item) => item.id > rootState.quizSection.active);
+      dispatch('activate', (newActiveItem && newActiveItem.id) || 0)
+
     },
   }
 };
