@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dragable v-model="item.options" >
+    <draggable v-model="item.options" >
       <el-row class="el-row--flex quiz-multiple-choice" v-for="(option, idx) in item.options" :key="idx">
         <div class="drag-option">
           <el-icon class="el-icon-d-caret"></el-icon>
@@ -16,19 +16,24 @@
           <el-button icon="el-icon-close" type="text" @click="removeOption(idx)" tabindex="-1"></el-button>
         </div>
       </el-row>
-    </dragable>
+    </draggable>
   </div>
 </template>
 
 <script>
   import MultipleChoiceItem from '@/models/MultipleChoiceItem';
-  import dragable from 'vuedraggable';
+  import draggable from 'vuedraggable';
 
   export default {
     name: 'QuizMultipleChoiceItem',
-    components: { dragable },
+    components: { draggable },
     props: {
         item: MultipleChoiceItem
+    },
+    data() {
+      return {
+        lastValue: 'last option value'
+      }
     },
     methods: {
       addOption(idx) {
@@ -40,7 +45,7 @@
       },
       removeOption(idx) {
         this.item.options.splice(idx, 1);
-      }
+      },
     }
   }
 </script>

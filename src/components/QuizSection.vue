@@ -1,5 +1,5 @@
 <template>
-  <div @click="activate(id)" class="quiz-section" :class="{active: sectionActive === id}">
+  <div @click="activate(id)" class="quiz-section" :ref="'quiz_section_' + id" :class="{active: sectionActive === id}">
     <div class="quiz-active-bar"></div>
     <div class="quiz-section-content">
       <slot></slot>
@@ -19,7 +19,21 @@ export default {
     ...mapGetters(['sectionActive', 'offsetTop'])
   },
   methods: {
-    ...mapActions(['activate'])
+    ...mapActions(['activate', 'updateOffsetTop'])
+  },
+  watch: {
+    sectionActive(value) {
+      const vm = this;
+      if (value === vm.id) {
+        vm.updateOffsetTop(vm.$refs['quiz_section_'+vm.id].offsetTop)
+      }
+    }
+  },
+  mounted() {
+    const vm = this;
+    vm.$nextTick().then(() => {
+      vm.updateOffsetTop(vm.$refs['quiz_section_'+vm.id].offsetTop);
+    });
   }
 }
 </script>

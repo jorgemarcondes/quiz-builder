@@ -17,8 +17,9 @@ const quizStore = {
     },
   },
   actions: {
-    addQuizItem: ({commit} = {}, item) => {
+    addQuizItem: ({commit, dispatch} = {}, item) => {
       commit('ADD_ITEM', item);
+      dispatch('activate', item.id)
     },
     changeQuizItem: ({commit} = {}, item) => {
       commit('REMOVE_ITEM', item.id);

@@ -2,10 +2,12 @@
   <div>
     <el-form ref="item" :model="item">
       <el-row class="el-row--flex">
-        <el-input class="quiz-text-input medium-input" placeholder="Pergunta"
+        <el-input class="quiz-text-input" placeholder="Pergunta" autofocus v-font-size="item.question"
+                  :ref="item.id + '_quiz_question'"
                   v-model="item.question" type="textarea" autosize>
         </el-input>
-        <el-select class="quiz-types" v-model="item.type" @change="changeQuizItem(item)" placeholder="Select">
+        <el-select v-if="sectionActive === item.id" class="quiz-types" v-model="item.type"
+                   @change="changeQuizItem(item)" placeholder="Select" tabindex="-1">
           <el-option
             v-for="type in typeOptions"
             :key="type.value"
@@ -25,7 +27,7 @@
   import ItemType from "@/enums/ItemType";
   import QuizItem from "@/models/QuizItem";
   import QuizMultipleChoiceItem from "@/components/QuizMultipleChoiceItem";
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     name: "QuizItem",
@@ -46,8 +48,12 @@
       for (let [key, value] of Object.entries(ItemType)) {
         vm.typeOptions.push({label: value.label, value: value.id})
       }
+      vm.$nextTick(() => {
+        vm.$refs[vm.item.id + '_quiz_question'].$el.getElementsByTagName('textarea')[0].focus();
+      })
     },
     computed: {
+      ...mapGetters(['sectionActive']),
       isSimpleText() {
         return this.item.type === ItemType.SIMPLE_TEXT.id;
       },
