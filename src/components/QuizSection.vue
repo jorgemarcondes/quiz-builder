@@ -1,10 +1,12 @@
 <template>
-  <div @click="activate(id)" class="quiz-section" :ref="'quiz_section_' + id" :class="{active: sectionActive === id}">
-    <div class="quiz-active-bar"></div>
-    <div class="quiz-section-content">
-      <slot></slot>
+  <transition name="fade">
+    <div @click="activate(id)" class="quiz-section" :ref="'quiz_section_' + id" :class="{active: sectionActive === id}">
+      <div class="quiz-active-bar"></div>
+      <div class="quiz-section-content">
+        <slot></slot>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>

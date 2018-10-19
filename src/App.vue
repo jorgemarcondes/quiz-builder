@@ -160,4 +160,13 @@ export default {
     right: -55px;
     transition: all .3s cubic-bezier(0.4,0.0,0.2,1);
   }
+  .fade-enter-active {
+    transition: opacity .5s;
+  }
+  .fade-leave-active {
+    transition: opacity .2s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+    opacity: 0;
+  }
 </style>

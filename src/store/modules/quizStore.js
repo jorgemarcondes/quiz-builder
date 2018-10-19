@@ -11,12 +11,14 @@ const quizStore = {
       if (!item.id) item.id = state.quiz.items.length + 1;
       state.quiz.items.push(itemFactory.createItem(item));
     },
-    REMOVE_ITEM: (state, itemIdx) => {
-      const activeItem = state.quiz.items.findIndex(x => x.id === itemIdx);
+    REMOVE_ITEM: (state, {id, reorder=true}) => {
+      const activeItem = state.quiz.items.findIndex(x => x.id === id);
       state.quiz.items.splice(activeItem, 1);
-      state.quiz.items.map((item, idx) => {
-        item.id = idx + 1;
-      })
+      if (reorder) {
+        state.quiz.items.map((item, idx) => {
+          item.id = idx + 1;
+        })
+      }
     },
   },
   actions: {
@@ -25,11 +27,11 @@ const quizStore = {
       dispatch('activate', item.id)
     },
     changeQuizItem: ({commit} = {}, item) => {
-      commit('REMOVE_ITEM', item.id);
+      commit('REMOVE_ITEM', {id: item.id, reorder: false});
       commit('ADD_ITEM', item);
     },
     removeActiveQuizItem: ({commit, rootState, dispatch, state} = {}) => {
-      commit('REMOVE_ITEM', rootState.quizSection.active);
+      commit('REMOVE_ITEM', {id: rootState.quizSection.active});
 
       const sortedItems = state.quiz.items.sort((a, b) => Math.max(a, b));
       const newActiveItem = sortedItems.find((item) => item.id < rootState.quizSection.active) ||
