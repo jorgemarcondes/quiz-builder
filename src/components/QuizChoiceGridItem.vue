@@ -7,7 +7,7 @@
         closable
         :disable-transitions="true"
         size="mini"
-        @close="deleteColumn(index)">
+        @close="item.deleteColumn(index)">
         {{ column }}
       </el-tag>
       <el-input
@@ -18,18 +18,18 @@
         ref="saveTagInput"
         size="mini"
         :style="{visibility: (sectionActive) ? 'visible' : 'hidden'}"
-        @keyup.enter.native="addColumn">
+        @keyup.enter.native="addSectionColumn">
       </el-input>
     </el-row>
     <el-row class="choice-grid-item-sections">
-      <div v-for="section in item.sections" :key="section.id">
+      <div v-for="(section, sectionIdx) in item.sections" :key="section.id" class="choice-grid-section">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
             <el-row class="el-row--flex">
-              <el-input class="quiz-text-input el-col-14" v-model="section.title" placeholder="Insira o texto da sessão"></el-input>
+              <el-input class="quiz-text-input el-col-14" v-model="item.sections[sectionIdx].title" placeholder="Insira o texto da sessão"></el-input>
               <div class="quiz-grid-section-actions">
-                <el-button icon="el-icon-circle-plus-outline" type="text"></el-button>
-                <el-button class="text-danger" icon="el-icon-delete" type="text" ></el-button>
+                <el-button @click="item.addSection()" icon="el-icon-circle-plus-outline" type="text"></el-button>
+                <el-button @click="item.deleteSection(sectionIdx)" class="text-danger" icon="el-icon-delete" type="text" :disabled="item.sections.length === 1" ></el-button>
               </div>
             </el-row>
           </div>
@@ -49,13 +49,14 @@
 
   import ChoiceGridItem from "@/models/ChoiceGridItem";
   import { mapGetters } from 'vuex';
-  import _ from 'lodash';
 
   export default {
     name: 'QuizChoiceGridItem',
     components: { },
     props: {
-        item: ChoiceGridItem,
+        item: {
+          type: ChoiceGridItem
+        },
     },
     data() {
       return {
@@ -66,45 +67,9 @@
       ...mapGetters(['sectionActive'])
     },
     methods: {
-      deleteColumn(index) {
-        this.item.columns.splice(index, 1);
-      },
-      addColumn() {
-        const vm = this;
-
-        (this.newColumn.length < 4) ? addSimpleColumn() : addAllColumns();
-
-        function addSimpleColumn() {
-          let invalidValue = vm.item.columns.find((v) => v === vm.newColumn) !== undefined || vm.newColumn === '';
-          if (invalidValue) return;
-          vm.item.columns.push(vm.newColumn);
-          vm.item.columns = _.sortBy(vm.item.columns, (column) => parseInt(column));
-          vm.newColumn = '';
-        }
-        function addAllColumns() {
-          let values = [];
-          let temp = '';
-          const isNumericArray = !isNaN(parseInt(vm.newColumn[0]));
-          for (const [index, value] of vm.newColumn.split('').entries()) {
-            if (isNumericArray && isNaN(value) || index > 10) continue;
-            let valueExists = values.find((v) => v === value) !== undefined;
-            if (valueExists || temp.length > 0) {
-              temp += value;
-            }
-            if (temp.length > 1) {
-              values.push(temp);
-              temp = '';
-            } else if (!temp.length) {
-              values.push(value);
-            }
-          }
-          let sortFunction = column => column;
-          if (isNumericArray) {
-            sortFunction = (column) => parseInt(column);
-          }
-          vm.item.columns = _.sortBy(values, sortFunction);
-          vm.newColumn = '';
-        }
+      addSectionColumn() {
+        this.item.addColumn(this.newColumn);
+        this.newColumn = '';
       }
     }
   }
@@ -135,5 +100,8 @@
   }
   .choice-grid-item-section-options span {
     margin-right: 8px;
+  }
+  .choice-grid-section {
+    margin-top: 8px;
   }
 </style>

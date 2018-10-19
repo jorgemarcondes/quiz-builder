@@ -12,7 +12,9 @@
   export default {
     name: 'QuizSimpleTextItem',
     props: {
-        item: SimpleTextItem
+        item: {
+          type: SimpleTextItem
+        }
     }
   }
 </script>

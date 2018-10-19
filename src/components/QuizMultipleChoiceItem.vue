@@ -28,7 +28,9 @@
     name: 'QuizMultipleChoiceItem',
     components: { draggable },
     props: {
-        item: MultipleChoiceItem
+        item: {
+          type: MultipleChoiceItem
+        }
     },
     methods: {
       addOption(idx) {
