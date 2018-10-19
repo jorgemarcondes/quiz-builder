@@ -18,6 +18,7 @@
       </el-row>
       <quiz-simple-text-item :item="item" v-if="isSimpleText"></quiz-simple-text-item>
       <quiz-multiple-choice-item :item="item" v-if="isMultipleChoice"></quiz-multiple-choice-item>
+      <quiz-choice-grid-item :item="item" v-if="isChoiceGrid"></quiz-choice-grid-item>
     </el-form>
   </div>
 </template>
@@ -28,10 +29,11 @@
   import QuizItem from "@/models/QuizItem";
   import QuizMultipleChoiceItem from "@/components/QuizMultipleChoiceItem";
   import { mapActions, mapGetters } from 'vuex';
+  import QuizChoiceGridItem from "@/components/QuizChoiceGridItem";
 
   export default {
     name: "QuizItem",
-    components: {QuizMultipleChoiceItem, QuizSimpleTextItem },
+    components: {QuizChoiceGridItem, QuizMultipleChoiceItem, QuizSimpleTextItem },
     props: {
       item: {
         type: QuizItem,
@@ -59,6 +61,9 @@
       },
       isMultipleChoice() {
         return this.item.type === ItemType.MULTIPLE_CHOICE.id;
+      },
+      isChoiceGrid() {
+        return this.item.type === ItemType.CHOICE_GRID.id;
       }
     },
     methods: {

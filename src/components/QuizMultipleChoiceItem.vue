@@ -30,11 +30,6 @@
     props: {
         item: MultipleChoiceItem
     },
-    data() {
-      return {
-        lastValue: 'last option value'
-      }
-    },
     methods: {
       addOption(idx) {
         const vm = this;

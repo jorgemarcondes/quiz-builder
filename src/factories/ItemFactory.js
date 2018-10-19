@@ -1,6 +1,7 @@
 import SimpleText from './../models/SimpleTextItem'
 import MultipleChoice from "../models/MultipleChoiceItem";
 import ItemType from "../enums/ItemType";
+import ChoiceGrid from "@/models/ChoiceGridItem";
 
 class ItemFactory {
 
@@ -15,6 +16,9 @@ class ItemFactory {
         break;
       case ItemType.MULTIPLE_CHOICE.id:
         this.itemClass = MultipleChoice;
+        break;
+      case ItemType.CHOICE_GRID.id:
+        this.itemClass = ChoiceGrid;
         break;
     }
 
