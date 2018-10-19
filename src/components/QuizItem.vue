@@ -2,7 +2,7 @@
   <div>
     <el-form ref="item" :model="item">
       <el-row class="el-row--flex">
-        <el-input class="quiz-text-input" placeholder="Pergunta" autofocus v-font-size="item.question"
+        <el-input class="quiz-text-input" :style="{visibility: isChoiceGrid ? 'hidden' : 'visible'}" placeholder="Pergunta" autofocus v-font-size="item.question"
                   :ref="item.id + '_quiz_question'"
                   v-model="item.question" type="textarea" autosize>
         </el-input>

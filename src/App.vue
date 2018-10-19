@@ -132,8 +132,11 @@ export default {
     padding: 5px;
     margin: 0 !important;
   }
-  .quiz-actions button.text-danger {
+  button.text-danger {
     color: #f56c6c;
+  }
+  button.text-danger:hover {
+    color: #f13b3b;
   }
   .quiz-actions i {
     font-size: 25px ;

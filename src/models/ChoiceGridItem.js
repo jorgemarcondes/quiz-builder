@@ -4,9 +4,10 @@ import ChoiceGridSection from "@/models/ChoiceGridSection";
 
 class ChoiceGridItem extends QuizItem {
 
-  constructor({id, sections = new Set([ChoiceGridSection])} = {}) {
-    super({id, question: null, type: ItemType.MULTIPLE_CHOICE.id});
-    this.section = sections
+  constructor({id, sections = [new ChoiceGridSection()], columns = []} = {}) {
+    super({id, question: null, type: ItemType.CHOICE_GRID.id});
+    this.sections = sections;
+    this.columns = columns;
   }
 
 }
