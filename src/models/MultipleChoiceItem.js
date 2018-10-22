@@ -8,6 +8,14 @@ class MultipleChoiceItem extends QuizItem {
     this.options = [""]
   }
 
+  addOption(idx){
+    this.options.splice(idx + 1, 0, "");
+  }
+
+  removeOption(idx){
+    this.options.splice(idx, 1);
+  }
+
 }
 
 export default MultipleChoiceItem
