@@ -1,6 +1,7 @@
 import ItemType from "../enums/ItemType";
 import QuizItem from "@/models/QuizItem";
 import ChoiceGridSection from "@/models/ChoiceGridSection";
+import _ from 'lodash';
 
 class ChoiceGridItem extends QuizItem {
 
@@ -18,8 +19,13 @@ class ChoiceGridItem extends QuizItem {
     function addSimpleColumn() {
       let invalidValue = vm.columns.find((v) => v === newColumn) !== undefined || newColumn === '';
       if (invalidValue) return;
+      const isNumericArray = !isNaN(parseInt(newColumn[0]));
+      let sortFunction = column => column;
+      if (isNumericArray) {
+        sortFunction = (column) => parseInt(column);
+      }
       vm.columns.push(newColumn);
-      vm.columns = _.sortBy(vm.columns, (column) => parseInt(column));
+      vm.columns = _.sortBy(vm.columns, sortFunction);
       newColumn = '';
     }
     function addAllColumns() {

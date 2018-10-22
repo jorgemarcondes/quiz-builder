@@ -116,12 +116,6 @@
   .quiz-grid-section-actions button {
     font-size: 21px !important;
   }
-  .choice-grid-item-section-options {
-    align-items: center;
-  }
-  .choice-grid-item-section-options span {
-    margin-right: 8px;
-  }
   .choice-grid-section {
     margin-top: 8px;
   }
