@@ -28,16 +28,27 @@
             <el-row class="el-row--flex">
               <el-input class="quiz-text-input el-col-14" v-model="item.sections[sectionIdx].title" placeholder="Insira o texto da sessão"></el-input>
               <div class="quiz-grid-section-actions">
-                <el-button @click="item.addSection()" icon="el-icon-circle-plus-outline" type="text"></el-button>
+                <el-button @click="item.addSection(sectionIdx)" icon="el-icon-circle-plus-outline" type="text"></el-button>
                 <el-button @click="item.deleteSection(sectionIdx)" class="text-danger" icon="el-icon-delete" type="text" :disabled="item.sections.length === 1" ></el-button>
               </div>
             </el-row>
           </div>
-          <div v-for="(option, index) in section.options" :key="index">
-            <el-row class="el-row--flex choice-grid-item-section-options">
-              <span>{{ index + 1 }}.</span>
-              <el-input class="quiz-text-input" v-model="section.options[index]" placeholder="Insira as opções da sessão"></el-input>
-            </el-row>
+          <div >
+            <draggable v-model="item.options" >
+              <el-row class="el-row--flex quiz-multiple-choice" v-for="(option, idx) in section.options" :key="idx">
+                <div class="drag-option">
+                  <el-icon class="el-icon-d-caret"></el-icon>
+                </div>
+                <el-input :ref="sectionIdx + '_' + idx + '_quiz_section_option'"
+                      @keyup.enter.native="addSectionOption(sectionIdx, idx)"
+                      class="quiz-text-input"
+                      v-model="section.options[idx]"
+                      placeholder="Insira as opções da sessão"></el-input>
+                <div class="exclude-option">
+                  <el-button icon="el-icon-close" type="text" @click="section.removeOption(idx)" tabindex="-1"></el-button>
+                </div>
+              </el-row>
+            </draggable>
           </div>
         </el-card>
       </div>
@@ -48,11 +59,12 @@
 <script>
 
   import ChoiceGridItem from "@/models/ChoiceGridItem";
-  import { mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex'
+  import draggable from 'vuedraggable';
 
   export default {
     name: 'QuizChoiceGridItem',
-    components: { },
+    components: { draggable },
     props: {
         item: {
           type: ChoiceGridItem
@@ -70,6 +82,15 @@
       addSectionColumn() {
         this.item.addColumn(this.newColumn);
         this.newColumn = '';
+      },
+      addSectionOption(sectionIdx, optionIdx) {
+        const vm = this;
+        const idx = ++optionIdx;
+
+        vm.item.sections[sectionIdx].addOption(idx);
+        vm.$nextTick(() => {
+          vm.$refs[sectionIdx + '_' + idx + '_quiz_section_option'][0].focus();
+        });
       }
     }
   }

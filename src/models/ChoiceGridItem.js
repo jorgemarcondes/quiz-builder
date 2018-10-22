@@ -51,9 +51,9 @@ class ChoiceGridItem extends QuizItem {
     this.columns.splice(index, 1);
   }
 
-  addSection() {
+  addSection(idx) {
     const vm = this;
-    vm.sections.push(new ChoiceGridSection({id: vm.sections.length + 1}))
+    vm.sections.splice(idx + 1, 0, new ChoiceGridSection({id: vm.sections.length + 1}))
   }
 
   deleteSection(idx) {

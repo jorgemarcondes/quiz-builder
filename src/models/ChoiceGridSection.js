@@ -7,6 +7,14 @@ class ChoiceGridSection {
     this.options = options;
   }
 
+  addOption(idx) {
+    this.options.splice(idx + 1, 0, "");
+  }
+
+  removeOption(idx) {
+    this.options.splice(idx, 1);
+  }
+
 }
 
 export default ChoiceGridSection

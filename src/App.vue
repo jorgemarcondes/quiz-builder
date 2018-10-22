@@ -172,4 +172,31 @@ export default {
   .fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
     opacity: 0;
   }
+
+  .quiz-multiple-choice {
+    margin-top: 13px;
+  }
+  .quiz-multiple-choice:hover .drag-option i, .quiz-multiple-choice:hover .exclude-option button {
+    visibility: visible;
+  }
+  .quiz-multiple-choice .el-radio+.el-radio {
+    margin-left: 0;
+  }
+  .drag-option, .exclude-option {
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    color: #c0c4cc;
+  }
+  .drag-option {
+    cursor: move;
+    padding-right: 8px;
+  }
+  .exclude-option {
+    margin-left: 34px;
+  }
+  .drag-option i, .exclude-option button {
+    visibility: hidden;
+  }
+
 </style>
