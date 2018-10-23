@@ -45,7 +45,7 @@
                       v-model="section.options[idx]"
                       placeholder="Insira as opções da sessão"></el-input>
                 <div class="exclude-option">
-                  <el-button icon="el-icon-close" type="text" @click="section.removeOption(idx)" tabindex="-1"></el-button>
+                  <el-button icon="el-icon-close" type="text" @click="removeSectionOption(section, idx)" tabindex="-1"></el-button>
                 </div>
               </el-row>
             </draggable>
@@ -91,6 +91,10 @@
         vm.$nextTick(() => {
           vm.$refs[sectionIdx + '_' + idx + '_quiz_section_option'][0].focus();
         });
+      },
+      removeSectionOption(section, optionIdx) {
+        section.removeOption(optionIdx);
+        this.$forceUpdate();
       }
     }
   }

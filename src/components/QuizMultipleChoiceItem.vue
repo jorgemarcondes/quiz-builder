@@ -13,7 +13,7 @@
                     :ref="item.id + '_quiz_multiple_choice_' + idx"></el-input>
         </el-radio>
         <div class="exclude-option">
-          <el-button icon="el-icon-close" type="text" @click="item.removeOption(idx)" tabindex="-1"></el-button>
+          <el-button icon="el-icon-close" type="text" @click="removeOption(idx)" tabindex="-1"></el-button>
         </div>
       </el-row>
     </draggable>
@@ -37,9 +37,14 @@
         const vm = this;
         vm.item.addOption(idx);
         vm.$nextTick(() => {
-          this.$refs[vm.item.id + '_quiz_multiple_choice_' + (idx + 1)][0].focus();
+          vm.$refs[vm.item.id + '_quiz_multiple_choice_' + (idx + 1)][0].focus();
         })
       },
+      removeOption(idx) {
+        const vm = this;
+        vm.removeOption(idx);
+        vm.$forceUpdate();
+      }
     }
   }
 </script>

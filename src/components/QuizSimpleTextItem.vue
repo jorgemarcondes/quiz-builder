@@ -7,7 +7,7 @@
 
 <script>
 
-  import SimpleTextItem from "../models/SimpleTextItem";
+  import SimpleTextItem from "@/models/SimpleTextItem";
 
   export default {
     name: 'QuizSimpleTextItem',

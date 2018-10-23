@@ -12,7 +12,12 @@ class ChoiceGridSection {
   }
 
   removeOption(idx) {
-    this.options.splice(idx, 1);
+    const vm = this;
+    if (vm.options.length === 1) {
+      vm.options[idx] = '';
+    } else {
+      vm.options.splice(idx, 1);
+    }
   }
 
 }

@@ -16,8 +16,8 @@
           </el-option>
         </el-select>
       </el-row>
-      <quiz-simple-text-item :item="item" v-if="isSimpleText"></quiz-simple-text-item>
       <quiz-multiple-choice-item :item="item" v-if="isMultipleChoice"></quiz-multiple-choice-item>
+      <quiz-simple-text-item :item="item" v-if="isSimpleText"></quiz-simple-text-item>
       <quiz-choice-grid-item :item="item" v-if="isChoiceGrid"></quiz-choice-grid-item>
     </el-form>
   </div>

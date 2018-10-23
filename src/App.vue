@@ -4,16 +4,7 @@
     <div class="quiz-main">
       <section class="quiz-main-container">
         <div>
-          <div class="quiz-actions-container">
-            <section :style="{top: offsetTop+'px'}">
-              <div class="quiz-actions">
-              <el-button @click="addItem()" icon="el-icon-circle-plus-outline" type="text"></el-button>
-              <el-button :class="{'text-danger': sectionActive}"
-                         @click="removeActiveQuizItem()"
-                         icon="el-icon-delete" type="text" :disabled="!sectionActive" ></el-button>
-              </div>
-            </section>
-          </div>
+          <quiz-actions></quiz-actions>
           <div class="quiz-container">
             <quiz-section :id="0" class="quiz-title-section">
               <el-input v-model="quiz.title"
@@ -34,35 +25,19 @@
 <script>
 import QuizSection from './components/QuizSection';
 import QuizItem from './components/QuizItem';
-import ItemType from './enums/ItemType';
-import { mapGetters, mapActions } from 'vuex';
+import QuizActions from './components/QuizActions';
+import { mapGetters } from 'vuex';
 import _ from 'lodash';
 
 export default {
   name: 'app',
-  components: {QuizItem, QuizSection },
-  data() {
-    return {
-    }
-  },
+  components: {QuizItem, QuizSection, QuizActions },
   computed: {
-    ...mapGetters(['quiz', 'sectionActive', 'offsetTop']),
+    ...mapGetters(['quiz']),
     orderedQuizItems() {
       return _.orderBy(this.quiz.items, 'id')
     }
   },
-  methods: {
-    ...mapActions(['addQuizItem', 'removeActiveQuizItem']),
-    addItem() {
-      const vm = this;
-      let activeItem = null;
-      if (vm.quiz.items.length && vm.sectionActive) {
-        activeItem = vm.quiz.items.find((item) => item.id === vm.sectionActive);
-      }
-      vm.addQuizItem({ type: (activeItem) ? activeItem.type : ItemType.SIMPLE_TEXT.id });
-      vm.$forceUpdate();
-    }
-  }
 }
 </script>
 
