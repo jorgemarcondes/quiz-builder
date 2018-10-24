@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import ItemType from "../enums/ItemType";
+  import ItemType from "@/enums/ItemType";
   import { mapGetters, mapActions } from 'vuex';
 
   export default {

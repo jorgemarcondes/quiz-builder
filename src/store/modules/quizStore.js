@@ -6,38 +6,31 @@ const quizStore = {
     quiz: new Quiz(),
   },
   mutations: {
-    ADD_ITEM: (state, item) => {
-      let itemFactory = new ItemFactory();
-      if (!item.id) item.id = state.quiz.items.length + 1;
-      state.quiz.items.push(itemFactory.createItem(item));
+    ADD_ITEM: (state, {item, idx}) => {
+      state.quiz.addItem(item, idx);
     },
     REMOVE_ITEM: (state, {id, reorder=true}) => {
-      const activeItem = state.quiz.items.findIndex(x => x.id === id);
-      state.quiz.items.splice(activeItem, 1);
-      if (reorder) {
-        state.quiz.items.map((item, idx) => {
-          item.id = idx + 1;
-        })
-      }
+      state.quiz.removeItemById(id, reorder);
     },
   },
   actions: {
-    addQuizItem: ({commit, dispatch} = {}, item) => {
-      commit('ADD_ITEM', item);
-      dispatch('activate', item.id)
+    addQuizItem: ({commit, rootState, dispatch} = {}, item) => {
+      commit('ADD_ITEM', {item, idx: rootState.quizSection.active});
     },
-    changeQuizItem: ({commit} = {}, item) => {
+    changeQuizItem: ({commit, rootState} = {}, item) => {
       commit('REMOVE_ITEM', {id: item.id, reorder: false});
-      commit('ADD_ITEM', item);
+      commit('ADD_ITEM', {item, idx: rootState.quizSection.active});
     },
     removeActiveQuizItem: ({commit, rootState, dispatch, state} = {}) => {
       commit('REMOVE_ITEM', {id: rootState.quizSection.active});
+      let newActiveItemId = 0;
+      if (state.quiz.items.length >= rootState.quizSection.active) {
+        newActiveItemId = rootState.quizSection.active
+      } else if (state.quiz.items.length === rootState.quizSection.active - 1) {
+        newActiveItemId = rootState.quizSection.active - 1
+      }
 
-      const sortedItems = state.quiz.items.sort((a, b) => Math.max(a, b));
-      const newActiveItem = sortedItems.find((item) => item.id < rootState.quizSection.active) ||
-                            sortedItems.find((item) => item.id > rootState.quizSection.active);
-      dispatch('activate', (newActiveItem && newActiveItem.id) || 0)
-
+      dispatch('activate', newActiveItemId)
     },
   }
 };

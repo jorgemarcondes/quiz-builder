@@ -6,15 +6,15 @@
         <div>
           <quiz-actions></quiz-actions>
           <div class="quiz-container">
-            <quiz-section :id="0" class="quiz-title-section">
+            <quiz-section :id="0" :is-draggable="false" class="quiz-title-section">
               <el-input v-model="quiz.title"
                         class="big-input quiz-text-input" placeholder="Título do Questionário"></el-input>
               <el-input v-model="quiz.description" type="textarea" autosize
                         class="quiz-text-input" placeholder="Descrição do formulário"></el-input>
             </quiz-section>
-            <quiz-section :id="item.id" v-for="item in orderedQuizItems" :key="item.id">
-              <quiz-item :item="item"></quiz-item>
-            </quiz-section>
+            <sortable-quiz-section-list lock-axis="y" v-model="quiz.items" :useDragHandle="true">
+              <sortable-quiz-section-item v-for="(item, index) in quiz.items" :key="item.id" :index="index" :item="item" />
+            </sortable-quiz-section-list>
           </div>
         </div>
       </section>
@@ -23,20 +23,18 @@
 </template>
 
 <script>
-import QuizSection from './components/QuizSection';
-import QuizItem from './components/QuizItem';
-import QuizActions from './components/QuizActions';
+import QuizSection from '@/components/QuizSection';
+import QuizItem from '@/components/QuizItem';
+import QuizActions from '@/components/QuizSection/QuizActions';
 import { mapGetters } from 'vuex';
-import _ from 'lodash';
+import SortableQuizSectionList from '@/components/QuizSection/SortableQuizSectionList';
+import SortableQuizSectionItem from '@/components/QuizSection/SortableQuizSectionItem';
 
 export default {
   name: 'app',
-  components: {QuizItem, QuizSection, QuizActions },
+  components: {QuizItem, QuizSection, QuizActions, SortableQuizSectionList, SortableQuizSectionItem },
   computed: {
     ...mapGetters(['quiz']),
-    orderedQuizItems() {
-      return _.orderBy(this.quiz.items, 'id')
-    }
   },
 }
 </script>
@@ -146,32 +144,6 @@ export default {
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
     opacity: 0;
-  }
-
-  .quiz-multiple-choice {
-    margin-top: 13px;
-  }
-  .quiz-multiple-choice:hover .drag-option i, .quiz-multiple-choice:hover .exclude-option button {
-    visibility: visible;
-  }
-  .quiz-multiple-choice .el-radio+.el-radio {
-    margin-left: 0;
-  }
-  .drag-option, .exclude-option {
-    font-size: 21px;
-    display: flex;
-    align-items: center;
-    color: #c0c4cc;
-  }
-  .drag-option {
-    cursor: move;
-    padding-right: 8px;
-  }
-  .exclude-option {
-    margin-left: 34px;
-  }
-  .drag-option i, .exclude-option button {
-    visibility: hidden;
   }
 
 </style>

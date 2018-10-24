@@ -24,12 +24,14 @@
 </template>
 
 <script>
-  import QuizSimpleTextItem from "./QuizSimpleTextItem";
+
+  import { mapActions, mapGetters } from 'vuex';
   import ItemType from "@/enums/ItemType";
   import QuizItem from "@/models/QuizItem";
-  import QuizMultipleChoiceItem from "@/components/QuizMultipleChoiceItem";
-  import { mapActions, mapGetters } from 'vuex';
-  import QuizChoiceGridItem from "@/components/QuizChoiceGridItem";
+  import QuizSimpleTextItem from "@/components/QuizItem/QuizSimpleTextItem";
+  import QuizMultipleChoiceItem from "@/components/QuizItem/QuizMultipleChoiceItem";
+  import QuizChoiceGridItem from "@/components/QuizItem/QuizChoiceGridItem";
+
 
   export default {
     name: "QuizItem",

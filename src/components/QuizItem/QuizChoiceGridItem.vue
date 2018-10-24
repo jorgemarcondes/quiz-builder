@@ -34,21 +34,9 @@
             </el-row>
           </div>
           <div >
-            <draggable v-model="item.options" >
-              <el-row class="el-row--flex quiz-multiple-choice" v-for="(option, idx) in section.options" :key="idx">
-                <div class="drag-option">
-                  <el-icon class="el-icon-d-caret"></el-icon>
-                </div>
-                <el-input :ref="sectionIdx + '_' + idx + '_quiz_section_option'"
-                      @keyup.enter.native="addSectionOption(sectionIdx, idx)"
-                      class="quiz-text-input"
-                      v-model="section.options[idx]"
-                      placeholder="Insira as opções da sessão"></el-input>
-                <div class="exclude-option">
-                  <el-button icon="el-icon-close" type="text" @click="removeSectionOption(section, idx)" tabindex="-1"></el-button>
-                </div>
-              </el-row>
-            </draggable>
+            <sortable-quiz-item-option-list lock-axis="y" v-model="section.options">
+              <sortable-quiz-item-option v-for="(option, idx) in section.options" :key="idx" :index="idx" :item="section" />
+            </sortable-quiz-item-option-list>
           </div>
         </el-card>
       </div>
@@ -58,13 +46,14 @@
 
 <script>
 
-  import ChoiceGridItem from "@/models/ChoiceGridItem";
   import { mapGetters } from 'vuex'
-  import draggable from 'vuedraggable';
+  import ChoiceGridItem from "@/models/ChoiceGridItem";
+  import SortableQuizItemOptionList from "@/components/QuizItem/SortableQuizItemOptionList";
+  import SortableQuizItemOption from "@/components/QuizItem/SortableQuizItemOption";
 
   export default {
     name: 'QuizChoiceGridItem',
-    components: { draggable },
+    components: {SortableQuizItemOption, SortableQuizItemOptionList },
     props: {
         item: {
           type: ChoiceGridItem
@@ -83,19 +72,6 @@
         this.item.addColumn(this.newColumn);
         this.newColumn = '';
       },
-      addSectionOption(sectionIdx, optionIdx) {
-        const vm = this;
-        const idx = ++optionIdx;
-
-        vm.item.sections[sectionIdx].addOption(idx);
-        vm.$nextTick(() => {
-          vm.$refs[sectionIdx + '_' + idx + '_quiz_section_option'][0].focus();
-        });
-      },
-      removeSectionOption(section, optionIdx) {
-        section.removeOption(optionIdx);
-        this.$forceUpdate();
-      }
     }
   }
 </script>

@@ -1,6 +1,6 @@
 const quizSectionStore = {
   state: {
-    active: false,
+    active: 0,
     offsetTop: 0
   },
   mutations: {

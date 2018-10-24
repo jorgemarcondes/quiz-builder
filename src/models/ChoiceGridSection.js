@@ -1,8 +1,7 @@
 
 class ChoiceGridSection {
 
-  constructor({id=1, title='', options=['']} = {}) {
-    this.id = id;
+  constructor({title='', options=['']} = {}) {
     this.title = title;
     this.options = options;
   }

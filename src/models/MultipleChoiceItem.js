@@ -1,5 +1,5 @@
 import ItemType from "../enums/ItemType";
-import QuizItem from "@/models/QuizItem";
+import QuizItem from "../models/QuizItem";
 
 class MultipleChoiceItem extends QuizItem {
 
@@ -13,7 +13,12 @@ class MultipleChoiceItem extends QuizItem {
   }
 
   removeOption(idx){
-    this.options.splice(idx, 1);
+    const vm = this;
+    if (vm.options.length === 1) {
+      vm.options[idx] = '';
+    } else {
+      vm.options.splice(idx, 1);
+    }
   }
 
 }
