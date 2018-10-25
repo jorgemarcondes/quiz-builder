@@ -16,19 +16,24 @@ class Quiz {
       vm.items[i].id++;
     }
 
-    item.id = idx + 1;
+    item.id = (_.max(_.map(vm.items, 'id')) || 0) + 1;
     const quizItem = new ItemFactory().createItem(item);
-    vm.items.splice(idx, 0, quizItem);
+    vm.items.push(quizItem);
   }
 
-  removeItemById(id, reorder) {
+  replaceItem(item, idx) {
+    const vm = this;
+    const quizItem = new ItemFactory().createItem(item);
+    vm.items.splice(idx - 1, 1, quizItem);
+  }
+
+  removeItemById(id) {
     const vm = this;
     vm.items.splice(vm.getItemIdxById(id), 1);
-    if (reorder) {
-      vm.items.map((item, idx) => {
-        item.id = idx + 1;
-      });
-    }
+
+    vm.items.map((item, idx) => {
+      item.id = idx + 1;
+    });
   }
 
   getItemIdxById(id) {

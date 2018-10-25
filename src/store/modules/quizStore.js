@@ -9,8 +9,11 @@ const quizStore = {
     ADD_ITEM: (state, {item, idx}) => {
       state.quiz.addItem(item, idx);
     },
-    REMOVE_ITEM: (state, {id, reorder=true}) => {
-      state.quiz.removeItemById(id, reorder);
+    REPLACE_ITEM: (state, {item, idx}) => {
+      state.quiz.replaceItem(item, idx);
+    },
+    REMOVE_ITEM: (state, id) => {
+      state.quiz.removeItemById(id);
     },
   },
   actions: {
@@ -18,11 +21,10 @@ const quizStore = {
       commit('ADD_ITEM', {item, idx: rootState.quizSection.active});
     },
     changeQuizItem: ({commit, rootState} = {}, item) => {
-      commit('REMOVE_ITEM', {id: item.id, reorder: false});
-      commit('ADD_ITEM', {item, idx: rootState.quizSection.active});
+      commit('REPLACE_ITEM', {item, idx: rootState.quizSection.active});
     },
     removeActiveQuizItem: ({commit, rootState, dispatch, state} = {}) => {
-      commit('REMOVE_ITEM', {id: rootState.quizSection.active});
+      commit('REMOVE_ITEM', rootState.quizSection.active);
       let newActiveItemId = 0;
       if (state.quiz.items.length >= rootState.quizSection.active) {
         newActiveItemId = rootState.quizSection.active

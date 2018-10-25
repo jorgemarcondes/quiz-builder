@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sortable-quiz-item-option-list lock-axis="y" v-model="item.options">
+    <sortable-quiz-item-option-list lock-axis="y" v-model="item.options" :useDragHandle="true">
       <sortable-quiz-item-option v-for="(option, idx) in item.options" :key="idx" :index="idx" :item="item" />
     </sortable-quiz-item-option-list>
   </div>
