@@ -19,6 +19,7 @@ class Quiz {
     item.id = (_.max(_.map(vm.items, 'id')) || 0) + 1;
     const quizItem = new ItemFactory().createItem(item);
     vm.items.push(quizItem);
+    vm.normalizeOrder();
   }
 
   replaceItem(item, idx) {
@@ -31,13 +32,17 @@ class Quiz {
     const vm = this;
     vm.items.splice(vm.getItemIdxById(id), 1);
 
-    vm.items.map((item, idx) => {
-      item.id = idx + 1;
-    });
+    vm.normalizeOrder();
   }
 
   getItemIdxById(id) {
     return this.items.findIndex((item) => item.id === id);
+  }
+
+  normalizeOrder() {
+    this.items.map((item, idx) => {
+      item.id = idx + 1;
+    });
   }
 
 }

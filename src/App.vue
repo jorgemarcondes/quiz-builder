@@ -12,7 +12,8 @@
               <el-input v-model="quiz.description" type="textarea" autosize
                         class="quiz-text-input" placeholder="Descrição do formulário"></el-input>
             </quiz-section>
-            <sortable-quiz-section-list lock-axis="y" v-model="quiz.items" :useDragHandle="true">
+            <sortable-quiz-section-list lock-axis="y" v-model="quiz.items" :useDragHandle="true"
+                                        @sortEnd="storeLastMovedIndex" @input="handleSortEnd">
               <sortable-quiz-section-item v-for="(item, index) in quiz.items" :key="item.id" :index="index" :item="item" />
             </sortable-quiz-section-list>
           </div>
@@ -26,7 +27,7 @@
 import QuizSection from '@/components/QuizSection';
 import QuizItem from '@/components/QuizItem';
 import QuizActions from '@/components/QuizSection/QuizActions';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import SortableQuizSectionList from '@/components/QuizSection/SortableQuizSectionList';
 import SortableQuizSectionItem from '@/components/QuizSection/SortableQuizSectionItem';
 
@@ -36,6 +37,22 @@ export default {
   computed: {
     ...mapGetters(['quiz']),
   },
+  data() {
+    return {
+      lastMovedIndex: 0
+    }
+  },
+  methods: {
+    ...mapActions(['activate']),
+    storeLastMovedIndex({newIndex}) {
+      this.lastMovedIndex = newIndex + 1;
+    },
+    handleSortEnd() {
+      const vm = this;
+      vm.quiz.normalizeOrder();
+      vm.activate(vm.lastMovedIndex);
+    }
+  }
 }
 </script>
 
